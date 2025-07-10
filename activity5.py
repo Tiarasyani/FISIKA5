@@ -52,12 +52,23 @@ def hitung_kirchhoff_2loop(r1, r2, r3, r4, r5, r6, v1, v2):
         return {'I1': I1, 'I2': I2, 'I3': I3}
     except Exception as e:
         return None
-    
+
 def parse_float(value):
     try:
         return float(value)
     except (ValueError, TypeError):
         return 0.0
+
+def hitung_total_resistansi(r_list, jenis):
+    if jenis == 'seri':
+        return sum(r_list)
+    elif jenis == 'paralel':
+        try:
+            return 1 / sum(1 / r for r in r_list if r != 0)
+        except ZeroDivisionError:
+            raise ValueError("Resistansi tidak boleh nol dalam konfigurasi paralel.")
+    else:
+        raise ValueError("Jenis rangkaian tidak valid.")
 
 @app.route('/')
 def index():
@@ -136,7 +147,7 @@ def kalkulator():
                     resistor_total = 1 / sum(1 / r for r in resistors if r != 0)
                 except ZeroDivisionError:
                     resistor_total = 0
-                    
+
 
     jumlah_loop = request.form.get("jumlah_loop", "1")
 
@@ -155,48 +166,55 @@ def kalkulator():
                            arus=arus,
                            hambatan=hambatan,
                            jumlah_loop=jumlah_loop)
+
 @app.route('/kirchhoff1', methods=['GET', 'POST'])
 def kirchhoff1():
     result = None
     error = None
     v_total = None
-    
+
     if request.method == 'POST':
         try:
-            R1 = float(request.form.get('R1', '0').strip() or 0)
-            R2 = float(request.form.get('R2', '0').strip() or 0)
-            R3 = float(request.form.get('R3', '0').strip() or 0)
+            R1 = float(request.form.get('R1', 0))
+            R2 = float(request.form.get('R2', 0))
+            R3 = float(request.form.get('R3', 0))
+            jenis_rangkaian = request.form.get('jenis_rangkaian', 'seri')
+            v_str = request.form.get('v_total', '')
 
-            v_str = request.form.get('Vtotal', '').strip()
             v_total = float(v_str) if v_str else 0.0
 
-            total_R = R1 + R2 + R3
+            resistors = [R1, R2, R3]
+            total_R = hitung_total_resistansi(resistors, jenis_rangkaian)
+
             if total_R == 0:
                 raise ValueError("Jumlah resistansi tidak boleh nol.")
 
-            I1 = (R1 / total_R) * v_total
-            I2 = (R2 / total_R) * v_total
-            I3 = (R3 / total_R) * v_total
+            I_total = v_total / total_R
 
+            # Arus di tiap resistor (sama untuk seri, berbeda proporsi untuk paralel)
+            if jenis_rangkaian == 'seri':
+                I1 = I2 = I3 = I_total
+            else:  # paralel
+                I1 = v_total / R1 if R1 != 0 else 0
+                I2 = v_total / R2 if R2 != 0 else 0
+                I3 = v_total / R3 if R3 != 0 else 0
+
+            # Daya
             P1 = I1**2 * R1
             P2 = I2**2 * R2
             P3 = I3**2 * R3
 
             result = {
-                'I1': round(I1, 4),
-                'I2': round(I2, 4),
-                'I3': round(I3, 4),
-                'P1': round(P1, 4),
-                'P2': round(P2, 4),
-                'P3': round(P3, 4),
+                'R_total': round(total_R, 4),
+                'I_total': round(I_total, 4),
+                'currents': [round(I1, 4), round(I2, 4), round(I3, 4)],
+                'powers': [round(P1, 4), round(P2, 4), round(P3, 4)]
             }
-
         except Exception as e:
-            result = {'error': f'Terjadi kesalahan: {str(e)}'}
+            error = str(e)
+            return render_template('kalkulator.html', error=error)
 
-    return render_template('kalkulator.html', result=result, v_total=v_total)
-
-
+    return render_template('kalkulator.html', result=result, error=error, v_total=v_total)
 
 
 @app.route('/1loop', methods=['POST'])
@@ -209,7 +227,7 @@ def loop():
                 resistors.append(float(val))
         V = float(request.form.get('v'))
         mode = request.form.get('mode')
-        
+
         # Untuk sederhananya kita hitung resistansi total
         if mode == 'seri':
             R_total = sum(resistors)
@@ -217,16 +235,16 @@ def loop():
             # paralel
             inv_sum = sum(1/r for r in resistors if r != 0)
             R_total = 1/inv_sum if inv_sum != 0 else 0
-        
+
         if R_total == 0:
             current = 0
         else:
             current = V / R_total
-        
+
         # Jika hanya 1 resistor dipakai, tampilkan current_1loop
         if len(resistors) == 1:
             return render_template('kalkulator.html', current_1loop=current)
-        
+
         # Jika lebih, tampilkan currents I1, I2, I3 (dummy karena belum pakai loop 2)
         # Untuk saat ini, kita hanya tampilkan I1 = I2 = I3 = current agar tetap ada hasil
         currents = {'I1': current, 'I2': current, 'I3': current}
@@ -267,7 +285,7 @@ def kirchhoff2():
                     b = np.array([v1 or 0, v2 or 0])
                     currents = np.linalg.solve(A, b)
                     I1, I2 = currents
-                    currents_dict = {"I1": round(I1, 4), "I2": round(I2, 4), "I3": round(I1 - I2, 4)}
+                    currents_dict = {"I1": round(I1, 4), "I2": round(I2, 4), "I3": round(I1 + I2, 4)}
                 except Exception as e:
                     error = f"Terjadi kesalahan perhitungan: {str(e)}"
 
@@ -311,7 +329,7 @@ def kirchhoff2():
     # Jika method GET, render form default
     return render_template('kalkulator.html', jumlah_loop=jumlah_loop)
 
-            
+
 @app.route("/hukum_kirchhoff2", methods=["GET", "POST"])
 def hukum_kirchhoff2():
     jumlah_loop = request.form.get("jumlah_loop", "1")
