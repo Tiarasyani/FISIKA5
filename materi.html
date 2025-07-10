@@ -1,0 +1,236 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 30px auto;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(to right,rgb(242, 186, 223),rgb(241, 216, 242));
+    padding: 20px;
+  }
+
+  .base {
+            background: linear-gradient(to right,rgba(249, 185, 249, 0.61),rgba(243, 237, 241, 0.65));
+            color: black;
+            padding: 50px 20px;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            box-shadow: 0 4px 10px rgba(219, 132, 174, 0.59);
+            animation: fadeSlide 1s ease-out;
+  }
+
+  h1, h2, h4, p, li {
+    color:rgb(195, 75, 155);
+  }
+  h1 {
+    border-radius: 8px;
+    color: rgb(195, 75, 155);
+  }
+  p {
+    margin: 1em 0;
+  }
+  ul {
+    margin: 1em 0 1em 1.5em;
+  }
+  code {
+    background:rgb(248, 245, 248);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  .highlight {
+    background:rgb(241, 178, 219);
+    border-left: 4px solidrgb(131, 47, 114);
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+  }
+
+  .outer-box {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+</style>
+
+<div class="base text-center">
+  <h1><strong>Materi Kapasitor dan Resistor</strong></h1>
+</div></div>
+<br><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Resistor</h2><br>
+    <p>Resistor adalah komponen listrik yang digunakan untuk menghambat arus listrik dalam rangkaian. Hambatan listrik ini diukur dalam satuan <code>Ohm (Ω)</code>.</p>
+    <ul>
+      <li>Hambatan tetap (idealnya).</li>
+      <li>Mengubah energi listrik menjadi panas.</li>
+      <li>Dapat dihubungkan secara seri atau paralel.</li>
+    </ul>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Kapasitor</h2><br>
+    <p>Kapasitor adalah komponen yang menyimpan energi listrik dalam bentuk medan listrik antara dua pelat yang dipisahkan oleh isolator (dielektrik).</p>
+    <ul>
+      <li>Kapasitansi diukur dalam <code>Farad (F)</code>.</li>
+      <li>Menyimpan muatan listrik dan melepaskannya saat diperlukan.</li>
+      <li>Hubungan kapasitansi tergantung pada rangkaian: seri dan paralel.</li>
+    </ul>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Tegangan (Voltage)</h2><br>
+    <p>Tegangan adalah beda potensial listrik antara dua titik dalam rangkaian yang menyebabkan arus mengalir. Diukur dalam <code>Volt (V)</code>.</p>
+    <p>Tegangan dapat dianggap sebagai "gaya dorong" yang membuat elektron bergerak dalam rangkaian.</p>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Arus Listrik (Current)</h2><br>
+    <p>Arus listrik adalah aliran muatan listrik yang mengalir melalui konduktor dalam satuan waktu tertentu. Diukur dalam <code>Ampere (A)</code>.</p>
+    <p>Arus merupakan banyaknya muatan listrik yang mengalir per satuan waktu.</p>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+<h2 style="text-align: center;">Daya Listrik (Power)</h2><br>
+    <p>Daya listrik adalah laju energi listrik yang digunakan atau dihasilkan dalam rangkaian. Diukur dalam <code>Watt (W)</code>.</p>
+    <p>Rumus daya listrik:</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>P = V × I</code></p>
+    </div>
+    <ul>
+      <li><code>P</code>: Daya listrik (Watt)</li>
+      <li><code>V</code>: Tegangan (Volt)</li>
+      <li><code>I</code>: Arus (Ampere)</li>
+    </ul>
+    <p>Daya juga bisa dihitung menggunakan rumus lain jika diketahui arus dan resistansi:</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>P = I² × R</code></p>
+    </div>
+    <p>atau menggunakan tegangan dan resistansi:</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>P = V² / R</code></p>
+    </div>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Hukum Ohm</h2><br>
+    <p>Hukum Ohm menghubungkan antara tegangan (<code>V</code>), arus (<code>I</code>), dan resistansi (<code>R</code>):</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>V = I × R</code></p>
+    </div>
+    <p><strong>Penjelasan:</strong></p>
+    <ul>
+      <li>Tegangan di seluruh resistor sebanding dengan arus yang mengalir melalui resistor tersebut.</li>
+      <li>Jika resistansi tetap, maka arus berbanding lurus dengan tegangan.</li>
+    </ul>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Hukum Kirchoff</h2><br>
+    <h4>Hukum Kirchoff 1 (Hukum Arus Kirchoff / KCL)</h4>
+    <p>Jumlah total arus yang masuk ke sebuah titik cabang (node) sama dengan jumlah total arus yang keluar dari titik tersebut.</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>∑ I<sub>masuk</sub> = ∑ I<sub>keluar</sub></code></p>
+      <p style="text-align: center;"><code>V<sub>1</sub> = (R<sub>1</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
+      <p style="text-align: center;"><code>V<sub>2</sub> = (R<sub>2</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
+      <p style="text-align: center;"><code>V<sub>n</sub> = (R<sub>n</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
+    </div>
+
+    <h4>Hukum Kirchoff 2 (Hukum Tegangan Kirchoff / KVL)</h4>
+    <p>Jumlah aljabar tegangan di sekitar sebuah loop tertutup dalam rangkaian listrik adalah nol.</p>
+    <div class="highlight">
+      <p style="text-align: center;"><code>∑ V = 0</code></p>
+    </div>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Rangkaian Resistor Seri dan Paralel</h2><br>
+    <h4>Seri:</h4>
+    <ul>
+      <li>Resistor disusun berurutan.</li>
+      <li>Arus sama besar di semua resistor.</li>
+      <li>Tegangan total adalah jumlah tegangan tiap resistor.</li>
+      <li>Hambatan total:
+    </ul>
+    <div class="highlight">
+     <p style="text-align: center;"><code>R_total = R_1 + R_2 + ... + R_n</code></p>
+    </div>
+
+    <h4>Paralel:</h4>
+    <ul>
+      <li>Resistor disusun dengan kedua ujungnya terhubung langsung.</li>
+      <li>Tegangan sama besar di semua resistor.</li>
+      <li>Arus total adalah jumlah arus tiap resistor.</li>
+      <li>Hambatan total:
+    </ul>
+    <div class="highlight">
+        <p style="text-align: center;"><code>1/R_total = 1/R_1 + 1/R_2 + ... + 1/R_n</code></p></div>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Rangkaian Kapasitor Seri dan Paralel</h2><br>
+    <h4>Seri:</h4>
+    <ul>
+      <li>Kapasitansi total berkurang seperti resistor paralel.</li>
+    </ul>
+    <div class="highlight">
+        <p style="text-align: center;"><code style="text-align: center;">1/C_total = 1/C_1 + 1/C_2 + ... + 1/C_n</code></p></div>
+    <h4>Paralel:</h4>
+    <ul>
+      <li>Kapasitansi total adalah jumlah kapasitansi tiap kapasitor.</li>
+    </ul>
+    <div class="highlight">
+        <p style="text-align: center;"><code style="text-align: center;">C_total = C_1 + C_2 + ... + C_n</code></p></div>
+  </div>
+</div><br><br>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h2 style="text-align: center;">Contoh Implementasi dalam Kehidupan Sehari-hari</h2><br>
+    <h4>Resistor</h4>
+    <ul>
+      <li><strong>Perangkat Elektronik:</strong> TV, radio, kulkas, mesin cuci, dll - untuk mengatur arus dan melindungi komponen.</li>
+      <li><strong>Lampu LED:</strong> Mengatur tegangan agar tidak melebihi batas LED.</li>
+      <li><strong>Pemanas:</strong> Digunakan untuk menghasilkan panas (heater).</li>
+      <li><strong>Sensor & Otomasi:</strong> Dalam alat ukur suhu, cahaya, kecepatan, dll.</li>
+    </ul>
+    <h4>Kapasitor</h4>
+    <ul>
+      <li><strong>Power Supply / Charger:</strong> Menyaring tegangan dan menyimpan energi sementara.</li>
+      <li><strong>Flash Kamera:</strong> Menyimpan dan melepas energi secara cepat.</li>
+      <li><strong>Motor Listrik:</strong> Membantu start motor dan menjaga kestabilan putaran.</li>
+      <li><strong>Audio & Remote:</strong> Menyimpan energi untuk keperluan timing atau penyaringan sinyal.</li>
+    </ul>
+    <h4>Gabungan Resistor & Kapasitor</h4>
+    <ul>
+      <li><strong>Rangkaian Timer:</strong> Seperti pada saklar lampu tangga otomatis.</li>
+      <li><strong>Filter Audio:</strong> Menyaring frekuensi tinggi/rendah pada sistem speaker.</li>
+    </ul>
+  </div>
+</div><br><br>
+
+{% endblock %}

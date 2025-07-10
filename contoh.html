@@ -1,0 +1,325 @@
+{% extends "layout.html" %}
+
+{% block title %}Contoh Soal{% endblock %}
+
+{% block content %}
+
+<head>
+<style>
+  body {
+        margin: 30px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 900px;
+        margin: 30px auto;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(to right,rgb(242, 186, 223),rgb(241, 216, 242));
+        padding: 20px;
+  }
+
+  .base {
+            background: linear-gradient(to right,rgba(249, 185, 249, 0.61),rgba(243, 237, 241, 0.65));
+            color: black;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 0px;
+            box-shadow: 0 4px 10px rgba(219, 132, 174, 0.59);
+            animation: fadeSlide 1s ease-out;
+        }
+
+  h4, p, li, code, .card, .btn {
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  h1, h2, h4, p, li {
+    color:rgb(151, 29, 110);
+  }
+
+  
+
+  h1 {
+    border-radius: 8px;
+    color: rgb(195, 75, 155);
+  }
+
+  .btn {
+            background-color:rgb(221, 61, 170);
+            border: none;
+  }
+
+  .btn:hover {
+            background-color:rgb(191, 36, 155);
+  }
+</style>
+
+<div class="base text-center">
+    <h1><strong>Contoh Soal</strong></h1>
+</div></div>
+<br><br><br>
+
+
+  <div class="card shadow p-4">
+    <h4 class="text-success">Soal 1: Rangkaian Kapasitor Seri</h4>
+    <p>Tiga buah kapasitor disusun secara seri seperti pada gambar. Tentukan kapasitas total kapasitor!</p>
+
+    <img src="{{ url_for('static', filename='seri.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor seri">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan1" role="button" aria-expanded="false" aria-controls="pembahasan1">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+    <div class="collapse" id="pembahasan1">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p>Gunakan rumus kapasitor seri:</p>
+        <p><code>1/C<sub>s</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub> + 1/C<sub>3</sub></code></p>
+        <p><code>1/C<sub>s</sub> = 1/2 + 1/3 + 1/4 = (6 + 4 + 3)/12 = 13/12</code></p>
+        <p><strong>C<sub>s</sub> = 12/13 &mu;F</strong></p>
+      </div>
+    </div>
+  </div><br><br>
+
+
+  <div class="card shadow p-4">
+    <h4 class="text-success">Soal 2: Rangkaian Kapasitor Paralel</h4>
+    <p>
+      Tiga buah kapasitor disusun secara paralel dengan nilai C<sub>1</sub> = 2 &mu;F, 
+      C<sub>2</sub> = 4 &mu;F, dan C<sub>3</sub> = 6 &mu;F. Dihubungkan ke sumber tegangan 10 V. 
+      Hitung kapasitas totalnya!
+    </p>
+
+    <img src="{{ url_for('static', filename='paralel.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor paralel">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan2" role="button" aria-expanded="false" aria-controls="pembahasan2">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+    <div class="collapse" id="pembahasan2">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p>Gunakan rumus kapasitor paralel:</p>
+        <p><code>C<sub>p</sub> = C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub> = 2 + 4 + 6</code></p>
+        <p><strong>C<sub>p</sub> = 12 &mu;F</strong>
+      </div>
+    </div>
+  </div><br><br>
+
+
+  <div class="card shadow p-4">
+
+    <h4 class="text-success">Soal 3: Rangkaian Kompleks</h4>
+    <p>
+      Lima kapasitor identik masing-masing 20 &mu;F disusun seperti gambar. Dihubungkan ke sumber tegangan 6 V. 
+      Hitung muatan total pada C<sub>5</sub>.
+    </p>
+
+    <img src="{{ url_for('static', filename='kompleks.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor kompleks">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan3" role="button" aria-expanded="false" aria-controls="pembahasan3">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+    <div class="collapse" id="pembahasan3">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <ol>
+          <li>C<sub>1</sub> dan C<sub>2</sub> seri: <code>C<sub>12</sub> = (1/20 + 1/20)<sup>-1</sup> = 10 &mu;F</code></li>
+          <li>C<sub>3</sub> dan C<sub>4</sub> seri: <code>C<sub>34</sub> = (1/20 + 1/20)<sup>-1</sup> = 10 &mu;F</code></li>
+          <li>C<sub>12</sub> dan C<sub>34</sub> paralel: <code>C<sub>1234</sub> = 10 + 10 = 20 &mu;F</code></li>
+          <li>C<sub>1234</sub> dan C<sub>5</sub> seri: <code>C<sub>total</sub> = (1/20 + 1/20)<sup>-1</sup> = 10 &mu;F</code></li>
+          <li>Hitung muatan total: <code>Q<sub>total</sub> = C<sub>total</sub> × V = 10 &mu;F × 6 V = 60 &mu;C</code></li>
+          <li>C<sub>5</sub> berada dalam rangkaian seri → muatannya sama dengan muatan total.</li>
+          <li><strong>Q<sub>5</sub> = 60 &mu;C</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div><br><br>
+
+
+   <div class="card shadow p-4">
+    <h4 class="text-success">Soal 4: Rangkaian Resistor Seri</h4>
+    <p>Jika diketahui R<sub>1</sub> = 1 Ohm, R<sub>2</sub> = 2 Ohm, R<sub>3</sub> = 3 Ohm.Tentukan Resistansi total!</p>
+    <img src="{{ url_for('static', filename='rseri.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor seri">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan1" role="button" aria-expanded="false" aria-controls="pembahasan1">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+    <div class="collapse" id="pembahasan1">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p>Gunakan rumus resistor seri:</p></code>
+        <p><code>R<sub>s</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> 
+        <p><code>R<sub>s</sub> = 1 + 2 + 3</code></p>
+        <p><strong>R<sub>s</sub> = 6 Ohm</strong></p>
+      </div>
+    </div>
+  </div><br><br>
+
+
+  <div class="card shadow p-4">
+    <h4 class="text-success">Soal 5: Rangkaian Resistor Paralel</h4>
+    <p>Jika diketahui R<sub>1</sub> = 2 Ohm, R<sub>2</sub> = 3 Ohm, R<sub>3</sub> = 6 Ohm. Tentukan Resistansai Total!</p>
+    <img src="{{ url_for('static', filename='rparalel.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor seri">
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan1" role="button" aria-expanded="false" aria-controls="pembahasan1">
+        Lihat Pembahasan
+      </a>
+    </p>
+    <div class="collapse" id="pembahasan1">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p>Gunakan rumus resitor paralel:</p>
+        <p><code>1/R<sub>p</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub></code></p>
+        <p><code>1/R<sub>p</sub> = 1/2 + 1/3 + 1/6 = (3 + 2 + 1)/6 = 6/6 = 1/1 Ohm</code></p>
+        <p><strong>R<sub>p</sub> = 1 Ohm</strong></p>
+      </div>
+    </div>
+  </div><br><br>
+
+  <div class="card shadow p-4">
+    <h4 class="text-success">Soal 6: Hukum Ohm</h4>
+    <p>Sebuah aki mempunyai tegangan 12 volt dipakai untuk menyalakan lampu yang mempunyai hambatan 60 Ohm. Berapa kuat arus yang mengalir pada lampu?</p> 
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan1" role="button" aria-expanded="false" aria-controls="pembahasan1">
+          Lihat Pembahasan
+      </a>
+    </p>
+    <div class="collapse" id="pembahasan1">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p><code>Dik: V = 12 V; R = 60 Ohm. Dit: I?</code></p>
+        <p>Jawab</p>
+        <p><code>I = V/R = 12/60 = <strong>0,2 A</strong></code></p>
+      </div>
+    </div>
+  </div><br><br>
+
+    <div class="card shadow p-4">
+    <h4 class="text-success">Soal 7: Hukum Kirchoff 1</h4>
+    <p>Jika diketahui R<sub>1</sub> = 4 Ohm, R<sub>2</sub> = 3 Ohm, R<sub>3</sub> = 6 Ohm dengan sumber tegangan 24 volt. Tentukan resistansi total, total kuat arus dan kuat arus setiap hambatan!</p>
+    <img src="{{ url_for('static', filename='kirchoff1.png') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor seri">
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan1" role="button" aria-expanded="false" aria-controls="pembahasan1">
+        Lihat Pembahasan
+      </a>
+    </p>
+    <div class="collapse" id="pembahasan1">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p>Menghitung resistansi total</p>
+        <p><code>1/R<sub>p</sub> = 1/R<sub>2</sub> + 1/R<sub>3</sub> = 1/3 + 1/6 = (2 + 1)/6 = 1/2 Ohm</code></p>
+        <p><code>R<sub>p<sub> = 2 Ohm</sub>
+        <p><code>R<sub>total</sub> = 2 + 4 = <strong>6 Ohm</strong></code></p><br>
+        <p>Menghitung total kuat arus</p>
+        <p><code>I<sub>total</sub> = V/R = 24/6 = <strong>4 Ohm</strong></code></p><br>
+        <p>Menghitung Tegangan</p>
+        <p><code>V<sub>1</sub> = I<sub>total</sub> x R<sub>1</sub> = 4 x 4 = 16 V</code></p>
+        <p><code>V<aub>23</sub> = V<sub>total</sub> - V<sub>1</sub> = 24 - 16 = 8 V</code></p><br>
+        <p>Menghitung kuat arus masing-masing hambatan</P>
+        <p><code>I<sub>1</sub> = V<sub>1</sub>/R<sub>1</sub> = 16/4 = 4 A</code></p>
+        <p><code>I<sub>2</sub> = V<sub>23</sub>/R<sub>2</sub> = 8/3 = 2,67 A</code></p>
+        <p><code>I<sub>3</sub> = V<sub>23</sub>/R<sub>3</sub> = 8/6 = 1,33 A</code></p><br>
+      </div>
+    </div>
+  </div><br><br>
+
+
+    <div class="card shadow p-4">
+    <h4 class="text-success">Soal 8: Hukum Kirchoff 2 (2 loop)</h4>
+    <p>
+      Jika diketahui R<sub>1</sub> = 2 Ohm, R<sub>2</sub> = 4 Ohm, R<sub>3</sub> = 1 Ohm. Tentukan besar I<sub>1</sub>, I<sub>2</sub> dan I<sub>3</sub>!
+    </p>
+
+    <img src="{{ url_for('static', filename='loopd.jpg') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor paralel">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan2" role="button" aria-expanded="false" aria-controls="pembahasan2">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+    <div class="collapse" id="pembahasan2">
+      <div class="card card-body bg-light">
+        <p><strong>Pembahasan:</strong></p>
+        <p><strong>Lintasan 1</strong></p>
+        <p><code>V<sub>AB</sub> + V<sub>BE</sub> + V<sub>EF</sub> + V<sub>FA</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>R<sub>1</sub> + I<sub>1</sub>R<sub>3</sub> + 0 - E<sub>1</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>R<sub>1</sub> + (I<sub>1</sub> + I<sub>2</sub>) R<sub>3</sub> - E<sub>1</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>R<sub>1</sub> + I<sub>1</sub>R<sub>3</sub> + I<sub>1</sub>R<sub>3</sub> - E<sub>1</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>(R<sub>1</sub> + R<sub>3</sub>) + I<sub>2</sub> + R<sub>3</sub> - E<sub>1</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>(2 + 1) + I<sub>2</sub> - 4 = 0</code></p>
+        <p><code><strong>3I<sub>1</sub> + I<sub>2</sub> = 4 ..... (1)</strong></code></p><br>
+        <p><strong>Lintasan 2</strong></p>
+        <p><code>V<sub>BE</sub> + V<sub>ED</sub> + V<sub>CD</sub> + V<sub>BC</sub> = 0</code></p>
+        <p><code>I<sub>3</sub>R<sub>3</sub> + 0 - E<sub>2</sub> + I<sub>2</sub>R<sub>2</sub> = 0</code></p>
+        <p><code>(I<sub>1</sub> + I<sub>2</sub>)R<sub>3</sub> + I<sub>2</sub>R<sub>2</sub> - E<sub>2</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>R<sub>3</sub> + I<sub>2</sub>R<sub>3</sub> + I<sub>2</sub>R<sub>2</sub> - E<sub>2</sub> = 0</code></p>
+        <p><code>I<sub>1</sub>R<sub>3</sub> + I<sub>2</sub>(R<sub>2</sub> + R<sub>2</sub>) - E<sub>2</sub> = 0</code></p>
+        <p><code><strong>I<sub>1</sub> + 5I<sub>2</sub> = 6 ..... (2)</strong></code></p><br>
+        <p><strong>Eliminasi persamaan 1 dan 2</strong></p>
+        <p><code>3I<sub>1</sub> + I<sub>2</sub> = 4   (x1)</code></p>
+        <p><code>I<sub>1</sub> + 5I<sub>2</sub> = 6   (x3)</code></p>
+        <p><code>------------------------------------------ =</code></p>
+        <p><code>3I<sub>1</sub> + I<sub>2</sub> = 4</code></p>
+        <p><code>3I<sub>1</sub> + 15I<sub>2</sub> = 18</code></p>
+        <p><code>------------------------------------------ -</code></p>
+        <p><code>-14I<sub>2</sub> = -14</code></p>
+        <p><code><strong>I<sub>2</sub> = 1</strong></code></p><br>
+        <p><strong>Substitusi I<sub>2</sub> ke persamaan 2</strong></p>
+        <p><code>I<sub>1</sub> + 5(1) = 6</code></p>
+        <p><code><strong>I<sub>1</sub> = 1</strong></code></p><br>
+        <p><strong>Hitung I<sub>3</sub></strong></p>
+        <p><code>I<sub>3</sub> = I<sub>1</sub> + I<sub>2</sub> = 1 + 1 = <strong>2 A</strong></code></p>
+    </div>
+  </div>
+</div><br><br>
+
+
+    <div class="card shadow p-4">
+    <h4 class="text-success">Soal 9: Hukum Kirchoff 2 (1 loop)</h4>
+    <p>
+      Perhatikan gambar di bawah ini. Tentukan Kuat arus yang mengalir pada rangkaian!
+    </p>
+
+    <img src="{{ url_for('static', filename='LOOPS.jpg') }}" class="img-fluid rounded mb-3" alt="Diagram rangkaian kapasitor paralel">
+
+    <p>
+      <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#pembahasan2" role="button" aria-expanded="false" aria-controls="pembahasan2">
+        Lihat Pembahasan
+      </a>
+    </p>
+
+  <div class="collapse" id="pembahasan2">
+    <div class="card card-body bg-light">
+      <p><strong>Pembahasan:</strong></p><br>
+      <p><strong>Dik:</strong></p>
+      <p>R<sub>1</sub> = 2 Ohm</p>
+      <p>R<sub>2</sub> = 3 Ohm</p>
+      <p>E = 10 Ohm</p><br>
+      <p><strong>Dit: </strong></p>
+      <p>I & V<sub>AB</sub></p><br>
+      <p><strong>Jawab:</strong></p>
+      <p><strong>Menghitung Kuat Arus</strong></p>
+      <p><code>V<sub>AB</sub> + V<sub>BC</sub> + V<sub>CD</sub> + V<sub>DA</sub> = 0</code></p>
+      <p><code>IR<sub>1</sub> + IR<sub>2</sub> + 0 - E = 0</code></p>
+      <p><code>I(2 + 3) - 10 = 0</code></p>
+      <p><code>5I - 10 = 0</code></p>
+      <p><code> = 2 A</code></p><br>
+      <p><strong>Menghitung V<sub>AB</sub></strong></p>
+      <p><code>V<sub>AB</sub> = IR<sub>1</sub></code></p>
+      <p><code>V<sub>AB</sub> = 2 x 2</code></p>
+      <p><code><strong>V<sub>AB</sub> = 4</strong></code></p>
+    </div>
+  </div>
+</div><br><br>
+
+{% endblock %}

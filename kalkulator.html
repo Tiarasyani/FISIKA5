@@ -1,0 +1,701 @@
+{% extends "layout.html" %}
+{% block title %}Kalkulator{% endblock %}
+{% block content %}
+
+<style>
+  body {
+     margin: 30px auto;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     animation: fadeSlide 1s ease-out
+  }
+
+  h1, h2, h4, p, li, label, option, input {
+    color:rgb(195, 75, 155);
+
+  }
+
+  .base {
+            background: linear-gradient(to right,rgba(249, 185, 249, 0.61),rgba(243, 237, 241, 0.65));
+            color: black;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-bottom: 0px;
+            box-shadow: 0 4px 10px rgba(219, 132, 174, 0.59);
+            animation: fadeSlide 1s ease-out;
+        }
+
+
+  .container, .card {
+    background: transparent !important;
+    padding: 0 !important;
+    box-shadow: 0 4px 10px rgba(219, 132, 174, 0.59);
+    border: none !important;
+    animation: fadeSlide 1s ease-out;
+  }
+
+  .card-body {
+    background: transparent !important;
+  }
+
+  .result-box {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: 0 4px 10px rgba(219, 132, 174, 0.59);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(219, 132, 174, 0.59);
+  }
+
+</style>
+
+<div class="base text-center">
+    <h1><strong>Kalkulator Rumus Fisika</strong></h1>
+</div></div>
+<br><br><br>
+
+   <!-- Kalkulator Kapasitor -->
+
+  <form method="POST" action="/kalkulator">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2>Kapasitor</h2>
+            <div class="form-group">
+              <input type="hidden" name="jenis" value="kapasitor">
+              <label for="configuration">Jenis Rangkaian:</label>
+              <select class="form-control" id="configuration" name="configuration" required>
+                <option value="">-- Pilih Jenis --</option>
+                <option value="seri" {% if configuration == 'seri' %}selected{% endif %}>Seri</option>
+                <option value="paralel" {% if configuration == 'paralel' %}selected{% endif %}>Paralel</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="voltage">Tegangan (Volt):</label>
+              <input type="number" step="any" class="form-control" id="voltage" name="voltage" value="{{ voltage or '' }}">
+            </div>
+            <div class="form-group">
+              <label>Nilai Kapasitor (μF):</label>
+              {% for i in range(5) %}
+                <input type="number" step="any" class="form-control mb-2" name="capacitor[]" placeholder="Kapasitor {{ i+1 }}" value="{{ capacitors[i] if capacitors|length > i else '' }}">
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+            {% if total_capacitance is not none %}
+            <div class="alert alert-success mt-4">
+              <h4>Hasil:</h4>
+              <p><strong>Kapasitansi Total:</strong> {{ total_capacitance|default(0)|round(4) }} μF</p>
+              {% if voltage %}
+              <p><strong>Muatan (Q):</strong> {{ charge|round(4) }} μC</p>
+              <p><strong>Energi (E):</strong> {{ energy|round(4) }} μJ</p>
+              {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</form>
+  <br><br>
+
+ <!-- Kalkulator Hukum Ohm -->
+
+  <form method="POST" action="/kalkulator">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2>Hukum Ohm</h2>
+        <input type="hidden" name="jenis" value="ohm"> <!-- penting -->
+        <input type="number" name="tegangan" placeholder="Tegangan (V)" step="any">
+        <input type="number" name="arus" placeholder="Arus (I)" step="any">
+        <input type="number" name="hambatan" placeholder="Hambatan (R)" step="any">
+
+    <!-- Tambahkan type="button" agar tidak submit form -->
+        <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+        {% if ohm_result %}
+        <div class="alert alert-success mt-4">
+          <h4>Hasil Perhitungan Hukum Ohm:</h4>
+          {% if tegangan is not none %}
+            <p><strong>Tegangan (V):</strong> {{ tegangan|round(4) }}</p>
+          {% endif %}
+          {% if arus is not none %}
+            <p><strong>Arus (I):</strong> {{ arus|round(4) }}</p>
+          {% endif %}
+          {% if hambatan is not none %}
+            <p><strong>Hambatan (R):</strong> {{ hambatan|round(4) }}</p>
+          {% endif %}
+          {% if tegangan is not none and arus is not none %}
+            <p><strong>Daya (P):</strong> {{ (tegangan * arus)|round(4) }} Watt</p>
+          {% endif %}
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  </form><br><br>
+
+  <!-- Kalkulator Resistor -->
+
+  <form method="POST" action="/kalkulator">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2>Resistor</h2>
+        <div class="form-group">
+          <input type="hidden" name="jenis" value="resistor">
+          <label for="resistor_config">Jenis Rangkaian:</label>
+          <select class="form-control" id="resistor_config" name="resistor_config" required>
+            <option value="">-- Pilih Jenis --</option>
+            <option value="seri" {% if resistor_config == 'seri' %}selected{% endif %}>Seri</option>
+            <option value="paralel" {% if resistor_config == 'paralel' %}selected{% endif %}>Paralel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nilai Resistor (Ohm):</label>
+          {% for i in range(5) %}
+            <input type="number" step="any" class="form-control mb-2" name="resistor[]" placeholder="Resistor {{ i+1 }}" value="{{ resistors[i] if resistors|length > i else '' }}">
+          {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+        {% if resistor_total is defined and resistor_total is not none %}
+        <div class="alert alert-success mt-4">
+          <p><strong>Resistansi Total:</strong> {{ resistor_total|round(4) }} Ohm</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+  <br><br>
+
+  <!-- Kalkulator Kirchhoff 1 -->
+  <form method="POST" action="/kirchhoff1">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2>Hukum Kirchoff 1</h2>
+      <div class="form-group">
+        {% for i in range(1,6) %}
+          <label>R{{i}} (Ohm): <input type="number" name="R{{i}}" step="any" min="0"></label><br>
+        {% endfor %}
+        <label>V total (Volt): <input type="number" name="Vtotal" step="any" min="0"></label><br>
+        <label>Mode:
+          <select name="mode">
+            <option value="seri">Seri</option>
+            <option value="paralel">Paralel</option>
+          </select>
+        </label><br>
+      </div>
+      <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+
+  {% if result %}
+    <div class="alert alert-success mt-4">
+      {% if result.error %}
+        <p style="color:red;">{{ result.error }}</p>
+      {% else %}
+        <h3>Hasil Perhitungan:</h3>
+        <p>Total R: {{ result.R_total }} Ohm</p>
+        <p>Total Arus: {{ result.I_total }} A</p>
+        <p>Vtotal: {{ v_total }} volt</p>
+        <p>Arus pada masing-masing resistor:</p>
+        <ul>
+          {% for current in result.currents %}
+            <li>I{{ loop.index }}: {{ current }} A</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if v_total and result.I_total %}
+        <p>Daya pada masing-masing resistor (Watt):</p>
+          <ul>
+            {% for power in result.powers %}
+              <li>P{{ loop.index }}: {{ power|round(4) }} Watt</li>
+            {% endfor %}
+          </ul>
+          <p>Daya Total: {{ (v_total * result.I_total)|round(4) }} Watt</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+  </div>
+</form>
+      <br><br>
+
+  <!-- Kalkulator Kirchhoff 2 -->
+
+  <form method="POST" action="{{ url_for('kirchhoff2') }}">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2>Hukum Kirchoff 2</h2>
+          <label for="jumlah_loop">Jumlah Loop:</label>
+          <select id="jumlah_loop" name="jumlah_loop" onchange="this.form.submit()">
+              <option value="1" {% if jumlah_loop == '1' %}selected{% endif %}>1 Loop</option>
+              <option value="2" {% if jumlah_loop == '2' %}selected{% endif %}>2 Loop</option>
+          </select>
+          <input type="hidden" name="jumlah_loop" value="{{ jumlah_loop }}">
+
+        {% if jumlah_loop == '1' %}
+            <h4><strong>1 Loop</strong></h4>
+            <label>Resistor R1 (Ohm):</label>
+            <input type="number" name="R1" min="0.01" step="any" required>
+
+            <label>Tegangan V1 (Volt):</label>
+            <input type="number" name="v1" step="any" required>
+
+            <label for="I1">Arus I1 (Ampere):</label>
+            <input type="number" step="any" name="I1"><br>
+
+            <label>Loop 1 Arus:</label>
+            <select name="dir1">
+              <option value="searah" {% if dir1 == 'searah' %}selected{% endif %}>Searah</option>
+              <option value="berlawanan" {% if dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan</option>
+            </select>
+
+            <label>Loop 1 Loop:</label>
+            <select name="loop_dir1">
+              <option value="searah" {% if loop_dir1 == 'searah' %}selected{% endif %}>Searah Jarum Jam</option>
+              <option value="berlawanan" {% if loop_dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
+            </select>
+            
+
+        {% elif jumlah_loop == '2' %}
+          <h4><strong>2 Loop</strong></h4>
+          <h4>Loop 1 Resistor</h4>
+          <input type="number" step="any" name="l1r1" placeholder="Resistor 1" value="{{ loop1[0] if loop1 is defined else '' }}">
+          <input type="number" step="any" name="l1r2" placeholder="Resistor 2" value="{{ loop1[1] if loop1 is defined else '' }}">
+          <input type="number" step="any" name="l1r3" placeholder="Resistor 3" value="{{ loop1[2] if loop1 is defined else '' }}">
+
+          <h4>Loop 2 Resistor</h4>
+          <input type="number" step="any" name="l2r1" placeholder="Resistor 1" value="{{ loop2[0] if loop2 is defined else '' }}">
+          <input type="number" step="any" name="l2r2" placeholder="Resistor 2" value="{{ loop2[1] if loop2 is defined else '' }}">
+          <input type="number" step="any" name="l2r3" placeholder="Resistor 3" value="{{ loop2[2] if loop2 is defined else '' }}">
+
+          <h4>Tegangan (Voltase)</h4>
+          <input type="number" step="any" name="v1" placeholder="Voltase Loop 1" value="{{ v1 if v1 is defined else '' }}">
+          <input type="number" step="any" name="v2" placeholder="Voltase Loop 2" value="{{ v2 if v2 is defined else '' }}">
+          
+          <h4>Arah Arus</h4>
+          <label>Loop 1 Arus:</label>
+          <select name="dir1">
+            <option value="searah" {% if dir1 == 'searah' %}selected{% endif %}>Searah</option>
+            <option value="berlawanan" {% if dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan</option>
+          </select>
+
+          <label>Loop 1 Loop:</label>
+          <select name="loop_dir1">
+            <option value="searah" {% if loop_dir1 == 'searah' %}selected{% endif %}>Searah Jarum Jam</option>
+            <option value="berlawanan" {% if loop_dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
+          </select>
+        
+          <label>Loop 2 Arus:</label>
+          <select name="dir2">
+            <option value="searah" {% if dir2 == 'searah' %}selected{% endif %}>Searah</option>
+            <option value="berlawanan" {% if dir2 == 'berlawanan' %}selected{% endif %}>Berlawanan</option>
+          </select>
+
+          <label>Loop 2 Loop:</label>
+          <select name="loop_dir2">
+            <option value="searah" {% if loop_dir2 == 'searah' %}selected{% endif %}>Searah Jarum Jam</option>
+            <option value="berlawanan" {% if loop_dir2 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
+          </select>
+        {% endif %}
+          
+          <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+          
+
+        {% if error %}
+          <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        {% if currents %}
+        <div class="alert alert-info mt-4">
+          <h3>Hasil Arus:</h3>
+          <p>I1: {{ currents.I1 }} A</p>
+          {% if jumlah_loop != '1' %}
+          <p>I2: {{ currents.I2 }} A</p>
+          {% endif %}
+          {% if v1 and currents.I1 is not none %}
+            <p>Daya Loop 1: {{ (v1 * currents.I1)|round(4) }} Watt</p>
+          {% endif %}
+          {% if v2 and jumlah_loop != '1' and currents.I2 is not none %}
+            <p>Daya Loop 2: {{ (v2 * currents.I2)|round(4) }} Watt</p>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </form><br><br>
+
+<!-- Visualisasi Loop Kirchhoff 2 -->
+<div class="card">
+  <h2>Visualisasi Loop Kirchhoff 2</h2>
+  <div id="visualization"
+    data-loop-dir1="{{ loop_dir1 }}"
+    data-loop-dir2="{{ loop_dir2 }}"
+    data-dir1="{{ dir1 }}"
+    data-dir2="{{ dir2 }}">
+    {% if currents is defined %}
+    <svg width="400" height="250" style="border:1px solid #ccc;">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+          <polygon points="0 0, 10 5, 0 10" fill="black" />
+        </marker>
+
+        <marker id="arrow1" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" markerUnits="strokeWidth">
+          <polygon points="0 0, 10 5, 0 10" fill="blue" />
+        </marker>
+        <marker id="arrow2" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" markerUnits="strokeWidth">
+          <polygon points="0 0, 10 5, 0 10" fill="green" />
+        </marker>
+        <marker id="arrow3" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" markerUnits="strokeWidth">
+          <polygon points="0 0, 10 5, 0 10" fill="red" />
+        </marker>
+      </defs>
+
+
+      <!-- Loop 1 kotak kiri -->
+      <rect x="20" y="20" width="150" height="150" fill="#cce5ff" stroke="#004085" stroke-width="2"/>
+      <text x="95" y="15" font-size="14" font-weight="bold" text-anchor="middle" fill="#004085">Loop 1</text>
+
+      <!-- Loop 1 lingkaran arah loop -->
+      <path id="loop1_arrow" d="M100,100 a40,40 0 1,1 1,0" fill="none"
+        stroke="blue" stroke-width="2"
+        marker-end="url(#arrowhead)"/>
+
+      <!-- Loop 2 kotak kanan -->
+      <rect x="230" y="20" width="150" height="150" fill="#d4edda" stroke="#155724" stroke-width="2"/>
+      <text x="305" y="15" font-size="14" font-weight="bold" text-anchor="middle" fill="#155724">Loop 2</text>
+
+      <!-- Loop 2 lingkaran arah loop -->
+      <path id="loop2_arrow" d="M310,100 a40,40 0 1,1 1,0" fill="none"
+      stroke="green" stroke-width="2"
+      marker-end="url(#arrowhead)"/>
+
+
+      <!-- Resistor tengah (Rg) penghubung -->
+      <rect x="170" y="90" width="60" height="40" fill="#f8d7da" stroke="#721c24" stroke-width="2" />
+      <text x="200" y="115" font-size="14" font-weight="bold" text-anchor="middle" fill="#721c24">Rg</text>
+
+      <!-- Garis arus loop 1 -->
+      <line id="i1_arrow" x1="170" y1="110" x2="20" y2="110" stroke="#004085" stroke-width="3" marker-end="url(#arrow1)" />
+
+      <!-- Garis arus loop 2 -->
+      <line id="i2_arrow" x1="230" y1="110" x2="380" y2="110" stroke="#155724" stroke-width="3" marker-end="url(#arrow2)" />
+
+      <!-- Teks arus -->
+      <text id="i1-text" x="80" y="100" font-size="14" fill="#004085">
+        I1 = {{ currents.I1 | default(0) | round(3) }} A
+      </text>
+      <text id="i2-text" x="320" y="100" font-size="14" fill="#155724">
+        I2 = {{ currents.I2 | default(0) | round(3) }} A
+      </text>
+    </svg>
+    {% else %}
+    <p>Isi data dan hitung untuk melihat visualisasi arus.</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Fungsi menampilkan hasil dan validasi Hukum Ohm
+  function hitungOhm() {
+    const V = parseFloat(document.getElementById('tegangan').value);
+    const I = parseFloat(document.getElementById('arus').value);
+    const R = parseFloat(document.getElementById('hambatan').value);
+    let hasil = '';
+
+    // Cek input dan tentukan perhitungan
+    if (!isNaN(V) && !isNaN(I) && isNaN(R)) {
+      const r = V / I;
+      hasil = `R = V / I = ${r.toFixed(4)} Ohm`;
+    } else if (!isNaN(V) && !isNaN(R) && isNaN(I)) {
+      const i = V / R;
+      hasil = `I = V / R = ${i.toFixed(4)} A`;
+    } else if (!isNaN(I) && !isNaN(R) && isNaN(V)) {
+      const v = I * R;
+      hasil = `V = I × R = ${v.toFixed(4)} Volt`;
+    } else if (!isNaN(V) && !isNaN(I) && !isNaN(R)) {
+      const checkR = (V / I).toFixed(4);
+      const checkV = (I * R).toFixed(4);
+      const checkI = (V / R).toFixed(4);
+      hasil = `Semua nilai diberikan.<br>
+               - R (dari V/I): ${checkR} Ohm<br>
+               - V (dari I×R): ${checkV} Volt<br>
+               - I (dari V/R): ${checkI} A`;
+    } else {
+      hasil = 'Masukkan minimal dua nilai untuk menghitung yang ketiga.';
+    }
+
+    // Tampilkan hasil
+    document.getElementById('hasilOhm').innerHTML = hasil;
+    document.getElementById('outputOhm').style.display = 'block';
+  }
+
+  // Fungsi hitung resistor seri
+  function hitungSeri() {
+    const resistors = [];
+    for(let i=1; i<=5; i++) {
+      const val = parseFloat(document.getElementById('seri'+i).value);
+      if (!isNaN(val)) resistors.push(val);
+    }
+    if (resistors.length === 0) return alert('Masukkan minimal satu resistor seri.');
+
+    const total = resistors.reduce((a,b)=>a+b,0);
+    document.getElementById('hasilSeri').innerText = 'Total Resistor Seri = ' + total.toFixed(2) + ' Ohm';
+    document.getElementById('alertSeri').classList.remove('d-none');
+  }
+
+  // Fungsi hitung resistor paralel
+  function hitungParalel() {
+    const resistors = [];
+    for(let i=1; i<=5; i++) {
+      const val = parseFloat(document.getElementById('par'+i).value);
+      if (!isNaN(val) && val > 0) resistors.push(val);
+    }
+    if (resistors.length === 0) return alert('Masukkan minimal satu resistor paralel.');
+
+    const totalInv = resistors.reduce((a,b) => a + 1/b, 0);
+    const total = 1/totalInv;
+    document.getElementById('hasilParalel').innerText = 'Total Resistor Paralel = ' + total.toFixed(2) + ' Ohm';
+    document.getElementById('alertParalel').classList.remove('d-none');
+  }
+
+  // Fungsi update visualisasi arus Kirchhoff 2 dari data backend (Jinja)
+  window.onload = () => {
+    {% if currents is defined %}
+      const i1Text = document.getElementById('i1-text');
+      const i2Text = document.getElementById('i2-text');
+
+      let i1 = parseFloat("{{ currents.I1 | default(0) }}");
+      let i2 = parseFloat("{{ currents.I2 | default(0) }}");
+
+      i1Text.textContent = `I1 = ${i1.toFixed(2)} A`;
+      i2Text.textContent = `I2 = ${i2.toFixed(2)} A`;
+
+      if(i1 < 0) i1Text.style.fill = 'red'; else i1Text.style.fill = '#004085';
+      if(i2 < 0) i2Text.style.fill = 'red'; else i2Text.style.fill = '#155724';
+
+      // Fungsi untuk buat path panah melingkar arah loop
+      function createLoopArrow(cx, cy, r, direction, color) {
+        // arah = 'searah' atau 'berlawanan'
+        let arrowPath = '';
+        if(direction === 'searah') {
+          // Panah searah jarum jam
+          arrowPath = `M ${cx + r} ${cy} A ${r} ${r} 0 1 1 ${cx - r} ${cy} L ${cx - r + 10} ${cy - 5} M ${cx - r} ${cy} L ${cx - r + 10} ${cy + 5}`;
+        } else {
+          // Panah berlawanan jarum jam
+          arrowPath = `M ${cx - r} ${cy} A ${r} ${r} 0 1 0 ${cx + r} ${cy} L ${cx + r - 10} ${cy - 5} M ${cx + r} ${cy} L ${cx + r - 10} ${cy + 5}`;
+        }
+        return arrowPath;
+      }
+
+      // Set path panah loop 1
+      const loop1Arrow = document.getElementById('loop1-arrow');
+      const loopDir1 = "{{ loop_dir1 or 'searah' }}";
+      loop1Arrow.setAttribute('d', createLoopArrow(95, 95, 60, loopDir1, '#004085'));
+      loop1Arrow.setAttribute('fill', '#004085');
+
+      // Set path panah loop 2
+      const loop2Arrow = document.getElementById('loop2-arrow');
+      const loopDir2 = "{{ loop_dir2 or 'searah' }}";
+      loop2Arrow.setAttribute('d', createLoopArrow(305, 95, 60, loopDir2, '#155724'));
+      loop2Arrow.setAttribute('fill', '#155724');
+
+      document.getElementById("i1-text").textContent = `I1 = ${currents.I1.toFixed(2)} A`;
+      document.getElementById("i2-text").textContent = `I2 = ${currents.I2.toFixed(2)} A`;
+      document.getElementById("i3-text").textContent = `I3 = ${currents.I3.toFixed(2)} A`;
+
+
+    {% endif %}
+  };
+
+  // Fungsi buat path panah melingkar (arah loop)
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const viz = document.getElementById("visualization");
+
+    const loopDir1 = viz.dataset.loopDir1;
+    const loopDir2 = viz.dataset.loopDir2;
+    const dir1 = viz.dataset.dir1;
+    const dir2 = viz.dataset.dir2;
+
+    // Ambil elemen panah loop dan arus
+    const loop1Arrow = document.getElementById("loop1_arrow");
+    const loop2Arrow = document.getElementById("loop2_arrow"); // tambahkan id ini pada path loop2
+    const arrowI1 = document.getElementById("arrow_i1"); // tambahkan id ini pada garis I1
+    const arrowI2 = document.getElementById("arrow_i2"); // tambahkan id ini pada garis I2
+
+    // Fungsi untuk mengubah arah path melingkar (loop)
+    function setLoopArrow(pathElement, clockwise) {
+      if (!pathElement) return;
+      if (clockwise) {
+        pathElement.setAttribute("d", "M100,100 a40,40 0 1,1 1,0"); // searah jarum jam
+      } else {
+        pathElement.setAttribute("d", "M100,100 a40,40 0 1,0 -1,0"); // berlawanan jarum jam
+      }
+    }
+
+    // Fungsi untuk mengatur arah garis lurus panah (arus)
+    function setCurrentArrow(lineElement, reverse) {
+      if (!lineElement) return;
+      let x1 = parseFloat(lineElement.getAttribute("x1"));
+      let y1 = parseFloat(lineElement.getAttribute("y1"));
+      let x2 = parseFloat(lineElement.getAttribute("x2"));
+      let y2 = parseFloat(lineElement.getAttribute("y2"));
+
+      if (reverse) {
+        lineElement.setAttribute("x1", x2);
+        lineElement.setAttribute("y1", y2);
+        lineElement.setAttribute("x2", x1);
+        lineElement.setAttribute("y2", y1);
+      }
+    }
+
+    // Atur arah loop
+    setLoopArrow(loop1Arrow, loopDir1 === "searah");
+    setLoopArrow(loop2Arrow, loopDir2 === "searah");
+
+    // Atur arah arus
+    setCurrentArrow(arrowI1, dir1 === "berlawanan");
+    setCurrentArrow(arrowI2, dir2 === "berlawanan");
+  });
+
+    function createLoopArrow(cx, cy, r, direction) {
+      if(direction === 'searah') {
+        return `
+          M ${cx + r} ${cy}
+          A ${r} ${r} 0 0 1 ${cx - r} ${cy}
+          L ${cx - r + 10} ${cy - 7}
+          M ${cx - r} ${cy}
+          L ${cx - r + 10} ${cy + 7}
+        `;
+      } else {
+        return `
+          M ${cx - r} ${cy}
+          A ${r} ${r} 0 0 0 ${cx + r} ${cy}
+          L ${cx + r - 10} ${cy - 7}
+          M ${cx + r} ${cy}
+          L ${cx + r - 10} ${cy + 7}
+        `;
+      }
+    }
+
+    const data = {{ data | default({}) | tojson }};;
+
+    const arrowI1 = document.getElementById('arrow-i1');
+    const arrowI2 = document.getElementById('arrow-i2');
+
+    if(data.dir1 === 'searah') {
+      arrowI1.setAttribute('x1', 60);
+      arrowI1.setAttribute('x2', 100);
+    } else {
+      arrowI1.setAttribute('x1', 100);
+      arrowI1.setAttribute('x2', 60);
+    }
+
+    if(data.dir2 === 'searah') {
+      arrowI2.setAttribute('x1', 310);
+      arrowI2.setAttribute('x2', 350);
+    } else {
+      arrowI2.setAttribute('x1', 350);
+      arrowI2.setAttribute('x2', 310);
+    }
+
+    document.getElementById('i1-text').textContent = `I1 = ${data.currents.I1.toFixed(2)} A`;
+    document.getElementById('i2-text').textContent = `I2 = ${data.currents.I2.toFixed(2)} A`;
+    document.getElementById('i3-text').textContent = `I3 = ${data.currents.I3.toFixed(2)} A`;
+
+    const dir1 = "{{ dir1 | default('searah') }}";
+    const dir2 = "{{ dir2 | default('searah') }}";
+    const loop1Arrow = document.getElementById("loop1_arrow");
+    const loop2Arrow = document.getElementById("loop2_arrow");
+    if (dir1 === "berlawanan") {
+        loop1Arrow.setAttribute("transform", "rotate(-180 100 100)");
+    }
+
+    if (dir2 === "berlawanan") {
+        loop2Arrow.setAttribute("transform", "rotate(-180 250 100)");
+    }
+    const loop1Arrow = document.getElementById('loop1-arrow');
+    const loop2Arrow = document.getElementById('loop2-arrow');
+
+    loop1Arrow.setAttribute('d', createLoopArrow(95, 95, 60, data.loop_dir1));
+    loop1Arrow.setAttribute('fill', 'none');
+    loop1Arrow.setAttribute('stroke', '#004085');
+    loop1Arrow.setAttribute('stroke-width', '3');
+
+    loop2Arrow.setAttribute('d', createLoopArrow(305, 95, 60, data.loop_dir2));
+    loop2Arrow.setAttribute('fill', 'none');
+    loop2Arrow.setAttribute('stroke', '#155724');
+    loop2Arrow.setAttribute('stroke-width', '3');
+
+    const currents = {{ currents | default({ 'I1': 0, 'I2': 0, 'I3': 0 }) | tojson }};
+    const dir1 = "{{ dir1 }}";
+    const dir2 = "{{ dir2 }}";
+
+    // Update nilai arus di HTML
+    document.getElementById('I1-val').textContent = currents.I1.toFixed(2);
+    document.getElementById('I2-val').textContent = currents.I2.toFixed(2);
+    document.getElementById('I3-val').textContent = currents.I3.toFixed(2);
+
+    // Fungsi update arah panah berdasarkan arus (misal rotasi 0 atau 180 derajat)
+    function updateArrow(id, current) {
+      const arrow = document.getElementById(id);
+      if (!arrow) return;
+      if (current < 0) {
+        arrow.style.transform = 'rotate(180deg)';
+        arrow.style.fill = 'red';  // optional tanda negatif
+      } else {
+        arrow.style.transform = 'rotate(0deg)';
+        arrow.style.fill = 'blue';
+      }
+    }
+
+    updateArrow('arrow1', currents.I1);
+    updateArrow('arrow2', currents.I2);
+    updateArrow('arrow3', currents.I3);
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const viz = document.getElementById("visualization");
+
+      const loopDir1 = viz.dataset.loopDir1;
+      const loopDir2 = viz.dataset.loopDir2;
+      const dir1 = viz.dataset.dir1;
+      const dir2 = viz.dataset.dir2;
+
+      const loop1Arrow = document.getElementById("loop1_arrow");
+      const loop2Arrow = document.getElementById("loop2_arrow");
+
+      const i1Arrow = document.getElementById("i1_arrow");
+      const i2Arrow = document.getElementById("i2_arrow");
+
+      // Ubah arah loop 1
+      if (loopDir1 === "searah") {
+        loop1Arrow.setAttribute("d", "M100,100 a40,40 0 1,1 1,0"); // CW
+      } else {
+        loop1Arrow.setAttribute("d", "M100,100 a40,40 0 1,0 -1,0"); // CCW
+      }
+
+      // Ubah arah loop 2
+      if (loopDir2 === "searah") {
+        loop2Arrow.setAttribute("d", "M250,100 a40,40 0 1,1 1,0");
+      } else {
+        loop2Arrow.setAttribute("d", "M250,100 a40,40 0 1,0 -1,0");
+      }
+
+      // Ubah arah arus loop 1
+      if (dir1 === "searah") {
+        i1Arrow.setAttribute("x1", "170");
+        i1Arrow.setAttribute("x2", "20");
+        i1Arrow.setAttribute("marker-end", "url(#arrow1)");
+      } else {
+        i1Arrow.setAttribute("x1", "20");
+        i1Arrow.setAttribute("x2", "170");
+        i1Arrow.setAttribute("marker-end", "url(#arrow1)");
+      }
+
+      // Ubah arah arus loop 2
+      if (dir2 === "searah") {
+        i2Arrow.setAttribute("x1", "230");
+        i2Arrow.setAttribute("x2", "380");
+        i2Arrow.setAttribute("marker-end", "url(#arrow2)");
+      } else {
+        i2Arrow.setAttribute("x1", "380");
+        i2Arrow.setAttribute("x2", "230");
+        i2Arrow.setAttribute("marker-end", "url(#arrow2)");
+      }
+    });
+
+</script>
+
+{% endblock %}

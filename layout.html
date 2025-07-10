@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rangkaian Kapasitor{% endblock %}</title>
+    
+    <!-- Bootstrap & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            background: linear-gradient(to right,rgb(242, 186, 223),rgb(241, 216, 242));
+            max-width: 900px;
+        }
+
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color:rgb(217, 27, 141);
+            text-decoration: underline;
+        }
+
+        .hero {
+            background: linear-gradient(to right,rgb(245, 152, 206),rgb(188, 97, 159));
+            color: white;
+            padding: 80px 20px;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            box-shadow: 0 8px 24px rgba(196, 85, 160, 0.41);
+            animation: fadeSlide 1s ease-out;
+        }
+
+        .btn-primary {
+            background-color:rgb(221, 61, 170);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color:rgb(191, 36, 155);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            animatio n: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+        }
+
+        footer {
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        .nav-link.clicked {
+            box-shadow: 0 0 10px rgba(203, 77, 119, 0.41);
+            transform: scale(0.95);
+        }
+
+        .container,
+        .container-fluid,
+        section,
+        .card,
+        form,
+        .result-box {
+            background-color: transparent; /* Atau sesuaikan dengan background umum */
+        }
+
+        /* Atur padding & margin antar elemen agar tidak menciptakan celah putih */
+        section, .card, .result-box {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        /* Jika elemen kalkulator dibungkus dalam card, pastikan transparan atau senada */
+        .card {
+            background-color: rgba(234, 226, 226, 0.1); /* Sedikit transparan agar tidak putih mencolok */
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        /* Hilangkan padding/margin berlebih antara elemen di kalkulator */
+        .kalkulator-section {
+            margin-top: 0;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="bi bi-lightning-charge-fill"></i> Kapasitor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/materi">Materi & Rumus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contoh">Contoh Soal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/kalkulator">Kalkulator</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero text-center">
+        <div class="hero-content">
+            <h3><strong>Selamat Datang di Pembelajaran Kapasitor</strong></h3>
+            <h5>Pelajari materi, rumus, dan hitung kapasitor dengan mudah!</h5>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>&copy; 2025 Kapasitor Rangkaian. Dibuat dengan ❤️ oleh asya.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                link.classList.add('clicked');
+                setTimeout(() => link.classList.remove('clicked'), 200);
+            });
+        });
+    </script>
+</body>
+</html>

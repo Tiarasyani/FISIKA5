@@ -1,0 +1,141 @@
+{% extends 'layout.html' %}
+{% block content %}
+<head>
+    <style>
+        /* Reset dasar untuk margin dan padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:rgb(255, 255, 255);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 900px;
+                margin: 30px auto;
+        }
+
+        /* Header Styling */
+        .header {
+            text-align: center;
+            background-color:rgb(104, 30, 86);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Content styling */
+        .content {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .content h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .member-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .member-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .member-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-item p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .member-item p span {
+            font-weight: bold;
+        }
+
+        .dosen-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .anggota-box {
+            background: #fff;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+
+
+        
+    </style>
+</head>
+
+<!-- Header Section -->
+<div class="header">
+    <h1>PERKENALAN</h1>
+    <p>jika tak kenal, maka tak sayang. iyakan sayanggg? ૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა</p>
+</div>
+
+<!-- Content Section -->
+<div class="content">
+    <h3>Anggota Kelompok:</h3>
+    <div class="member-list">
+        <div class="member-item text-center">
+            <p><span>1. Tiarasyani Junia Bahri</span> - 51424335</p>
+        </div>
+        <div class="member-item text-center">
+            <p><span>2. Aulia Tifani</span> - 50424209</p>
+        </div>
+        <div class="member-item text-center">
+            <p><span>3. Naisya Putri Abdullah</span> - 51424000</p>
+        </div>
+        <div class="member-item text-center">
+            <p><span>4. Freya Inezra</span> - 50424474</p>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <h3>Dosen</h3>
+        <div class="dosen-container">
+            <div class="anggota-box">
+                <p><span>Mariza Wijayanti</span></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

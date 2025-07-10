@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Rumus Fisika</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kumpulan Rumus Fisika</h1>
+
+        <div class="card">
+            <h2>Resistor Seri</h2>
+            <pre>R<sub>total</sub> = R₁ + R₂ + R₃ + ...</pre>
+        </div>
+
+        <div class="card">
+            <h2>Resistor Paralel</h2>
+            <pre>1/R<sub>total</sub> = 1/R₁ + 1/R₂ + 1/R₃ + ...</pre>
+        </div>
+
+        <div class="card">
+            <h2>Hukum Ohm</h2>
+            <pre>V = I × R</pre>
+        </div>
+
+        <div class="card">
+            <h2>Hukum Kirchhoff 1</h2>
+            <pre>∑I<sub>masuk</sub> = ∑I<sub>keluar</sub></pre>
+        </div>
+
+        <div class="card">
+            <h2>Hukum Kirchhoff 2</h2>
+            <pre>∑V = 0</pre>
+        </div>
+    </div>
+</body>
+{% endblock %}
