@@ -128,6 +128,36 @@
   </div>
   </form><br><br>
 
+  <form method="POST" action="/kalkulator">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2>Resistor</h2>
+        <div class="form-group">
+          <input type="hidden" name="jenis" value="resistor">
+          <label for="resistor_config">Jenis Rangkaian:</label>
+          <select class="form-control" id="resistor_config" name="resistor_config" required>
+            <option value="">-- Pilih Jenis --</option>
+            <option value="seri" {% if resistor_config == 'seri' %}selected{% endif %}>Seri</option>
+            <option value="paralel" {% if resistor_config == 'paralel' %}selected{% endif %}>Paralel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nilai Resistor (Ohm):</label>
+          {% for i in range(5) %}
+            <input type="number" step="any" class="form-control mb-2" name="resistor[]" placeholder="Resistor {{ i+1 }}" value="{{ resistors[i] if resistors|length > i else '' }}">
+          {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Hitung</button>
+        {% if resistor_total is defined and resistor_total is not none %}
+        <div class="alert alert-success mt-4">
+          <p><strong>Resistansi Total:</strong> {{ resistor_total|round(4) }} Ohm</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+  <br><br>
+
   <!-- Kalkulator Resistor -->
   <form method="POST" action="/kirchhoff1">
   <div class="card mb-4">
