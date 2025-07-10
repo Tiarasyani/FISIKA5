@@ -129,86 +129,58 @@
   </form><br><br>
 
   <!-- Kalkulator Resistor -->
-
-  <form method="POST" action="/kalkulator">
-    <div class="card mb-4">
-      <div class="card-body">
-        <h2>Resistor</h2>
-        <div class="form-group">
-          <input type="hidden" name="jenis" value="resistor">
-          <label for="resistor_config">Jenis Rangkaian:</label>
-          <select class="form-control" id="resistor_config" name="resistor_config" required>
-            <option value="">-- Pilih Jenis --</option>
-            <option value="seri" {% if resistor_config == 'seri' %}selected{% endif %}>Seri</option>
-            <option value="paralel" {% if resistor_config == 'paralel' %}selected{% endif %}>Paralel</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Nilai Resistor (Ohm):</label>
-          {% for i in range(5) %}
-            <input type="number" step="any" class="form-control mb-2" name="resistor[]" placeholder="Resistor {{ i+1 }}" value="{{ resistors[i] if resistors|length > i else '' }}">
-          {% endfor %}
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Hitung</button>
-        {% if resistor_total is defined and resistor_total is not none %}
-        <div class="alert alert-success mt-4">
-          <p><strong>Resistansi Total:</strong> {{ resistor_total|round(4) }} Ohm</p>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </form>
-  <br><br>
-
-  <!-- Kalkulator Kirchhoff 1 -->
   <form method="POST" action="/kirchhoff1">
   <div class="card mb-4">
     <div class="card-body">
       <h2>Hukum Kirchoff 1</h2>
       <div class="form-group">
-        {% for i in range(1,6) %}
-          <label>R{{i}} (Ohm): <input type="number" name="R{{i}}" step="any" min="0"></label><br>
-        {% endfor %}
-        <label>V total (Volt): <input type="number" name="Vtotal" step="any" min="0"></label><br>
+        <label>R1 (Ohm): <input type="number" name="R1" step="any" min="0"></label><br>
+        <label>R2 (Ohm): <input type="number" name="R2" step="any" min="0"></label><br>
+        <label>R3 (Ohm): <input type="number" name="R3" step="any" min="0"></label><br>
+
+        <label>V total (Volt): <input type="number" name="v_total" step="any" min="0"></label><br>
+
         <label>Mode:
-          <select name="mode">
+          <select name="jenis_rangkaian">
             <option value="seri">Seri</option>
             <option value="paralel">Paralel</option>
           </select>
         </label><br>
       </div>
+
       <button type="submit" class="btn btn-primary mt-2">Hitung</button>
 
-  {% if result %}
-    <div class="alert alert-success mt-4">
-      {% if result.error %}
-        <p style="color:red;">{{ result.error }}</p>
-      {% else %}
-        <h3>Hasil Perhitungan:</h3>
-        <p>Total R: {{ result.R_total }} Ohm</p>
-        <p>Total Arus: {{ result.I_total }} A</p>
-        <p>Vtotal: {{ v_total }} volt</p>
-        <p>Arus pada masing-masing resistor:</p>
-        <ul>
-          {% for current in result.currents %}
-            <li>I{{ loop.index }}: {{ current }} A</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-      {% if v_total and result.I_total %}
-        <p>Daya pada masing-masing resistor (Watt):</p>
-          <ul>
-            {% for power in result.powers %}
-              <li>P{{ loop.index }}: {{ power|round(4) }} Watt</li>
-            {% endfor %}
-          </ul>
-          <p>Daya Total: {{ (v_total * result.I_total)|round(4) }} Watt</p>
+      {% if result %}
+        <div class="alert alert-success mt-4">
+          {% if error %}
+            <p style="color:red;">{{ error }}</p>
+          {% else %}
+            <h3>Hasil Perhitungan:</h3>
+            <p>Total R: {{ result.R_total }} Ohm</p>
+            <p>Total Arus: {{ result.I_total }} A</p>
+            <p>Vtotal: {{ v_total }} volt</p>
+
+            <p>Arus pada masing-masing resistor:</p>
+            <ul>
+              {% for current in result.currents %}
+                <li>I{{ loop.index }}: {{ current }} A</li>
+              {% endfor %}
+            </ul>
+
+            <p>Daya pada masing-masing resistor:</p>
+            <ul>
+              {% for power in result.powers %}
+                <li>P{{ loop.index }}: {{ power }} W</li>
+              {% endfor %}
+            </ul>
+
+            <p>Daya Total: {{ (result.I_total ** 2) * result.R_total }} W</p>
+          {% endif %}
+        </div>
       {% endif %}
     </div>
-  {% endif %}
-</div>
   </div>
-</form>
+  </form>
       <br><br>
 
   <!-- Kalkulator Kirchhoff 2 -->
@@ -232,9 +204,6 @@
             <label>Tegangan V1 (Volt):</label>
             <input type="number" name="v1" step="any" required>
 
-            <label for="I1">Arus I1 (Ampere):</label>
-            <input type="number" step="any" name="I1"><br>
-
             <label>Loop 1 Arus:</label>
             <select name="dir1">
               <option value="searah" {% if dir1 == 'searah' %}selected{% endif %}>Searah</option>
@@ -246,7 +215,7 @@
               <option value="searah" {% if loop_dir1 == 'searah' %}selected{% endif %}>Searah Jarum Jam</option>
               <option value="berlawanan" {% if loop_dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
             </select>
-            
+
 
         {% elif jumlah_loop == '2' %}
           <h4><strong>2 Loop</strong></h4>
@@ -263,7 +232,7 @@
           <h4>Tegangan (Voltase)</h4>
           <input type="number" step="any" name="v1" placeholder="Voltase Loop 1" value="{{ v1 if v1 is defined else '' }}">
           <input type="number" step="any" name="v2" placeholder="Voltase Loop 2" value="{{ v2 if v2 is defined else '' }}">
-          
+
           <h4>Arah Arus</h4>
           <label>Loop 1 Arus:</label>
           <select name="dir1">
@@ -276,7 +245,7 @@
             <option value="searah" {% if loop_dir1 == 'searah' %}selected{% endif %}>Searah Jarum Jam</option>
             <option value="berlawanan" {% if loop_dir1 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
           </select>
-        
+
           <label>Loop 2 Arus:</label>
           <select name="dir2">
             <option value="searah" {% if dir2 == 'searah' %}selected{% endif %}>Searah</option>
@@ -289,9 +258,9 @@
             <option value="berlawanan" {% if loop_dir2 == 'berlawanan' %}selected{% endif %}>Berlawanan Jarum Jam</option>
           </select>
         {% endif %}
-          
+
           <button type="submit" class="btn btn-primary mt-2">Hitung</button>
-          
+
 
         {% if error %}
           <p style="color: red;">{{ error }}</p>
@@ -303,6 +272,7 @@
           <p>I1: {{ currents.I1 }} A</p>
           {% if jumlah_loop != '1' %}
           <p>I2: {{ currents.I2 }} A</p>
+          <p>I3: {{ currents.I3 }} A</p>
           {% endif %}
           {% if v1 and currents.I1 is not none %}
             <p>Daya Loop 1: {{ (v1 * currents.I1)|round(4) }} Watt</p>
