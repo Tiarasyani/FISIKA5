@@ -4,7 +4,7 @@
 
 <style>
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 900px;
     margin: 30px auto;
     line-height: 1.6;
@@ -25,6 +25,7 @@
 
   h1, h2, h4, p, li {
     color:rgb(195, 75, 155);
+    font:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   h1 {
     border-radius: 8px;
@@ -85,6 +86,7 @@
       <li>Kapasitansi diukur dalam <code>Farad (F)</code>.</li>
       <li>Menyimpan muatan listrik dan melepaskannya saat diperlukan.</li>
       <li>Hubungan kapasitansi tergantung pada rangkaian: seri dan paralel.</li>
+      <li>Energi total kapasitor: <code>E = 1/2 × C × V<sup>2</sup></code></li>
     </ul>
   </div>
 </div><br><br>
@@ -151,11 +153,9 @@
     <p>Jumlah total arus yang masuk ke sebuah titik cabang (node) sama dengan jumlah total arus yang keluar dari titik tersebut.</p>
     <div class="highlight">
       <p style="text-align: center;"><code>∑ I<sub>masuk</sub> = ∑ I<sub>keluar</sub></code></p>
-      <p style="text-align: center;"><code>V<sub>1</sub> = (R<sub>1</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
-      <p style="text-align: center;"><code>V<sub>2</sub> = (R<sub>2</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
-      <p style="text-align: center;"><code>V<sub>n</sub> = (R<sub>n</sub>/(R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>))V</code></p>
+      <p style="text-align: center;"><code>I<sub>total</sub> = V<sub>dc</sub>/R<sub>total</sub></code></p>
+      <p style="text-align: center;"><code>I<sub>n</sub> = V<sub>dc</sub>/R<sub>n</sub></code></p>
     </div>
-
     <h4>Hukum Kirchoff 2 (Hukum Tegangan Kirchoff / KVL)</h4>
     <p>Jumlah aljabar tegangan di sekitar sebuah loop tertutup dalam rangkaian listrik adalah nol.</p>
     <div class="highlight">
